@@ -1,0 +1,90 @@
+/* BobaTime — Design system (pastel blue palette) */
+:root {
+  --color-primary: #5a8fa8;
+  --color-primary-light: #8bb8cc;
+  --color-primary-dark: #3d6b80;
+  --color-bg: #e8f2f7;
+  --color-bg-alt: #d4e8f0;
+  --color-surface: #ffffff;
+  --color-text: #1e3a4d;
+  --color-text-muted: #4a6578;
+  --color-border: #b8d4e0;
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --shadow-sm: 0 2px 12px rgba(30, 58, 77, 0.08);
+  --shadow-md: 0 8px 28px rgba(30, 58, 77, 0.1);
+  --shadow-lg: 0 16px 48px rgba(30, 58, 77, 0.12);
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+  --transition: 0.25s ease;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-alt) 100%);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+}
+
+input, textarea {
+  font-family: var(--font-body);
+}
+
+.app-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+@media (max-width: 600px) {
+  .nav-menu {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

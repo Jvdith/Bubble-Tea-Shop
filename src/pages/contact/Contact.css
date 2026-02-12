@@ -1,0 +1,126 @@
+.contact-main {
+  flex: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+}
+
+.contact-intro {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.contact-title {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  margin-bottom: 0.5rem;
+}
+
+.contact-desc {
+  color: var(--color-text-muted);
+  font-size: 1.05rem;
+}
+
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 2rem;
+  align-items: start;
+  margin-bottom: 2.5rem;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.info-block h3 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-primary);
+  margin-bottom: 0.35rem;
+}
+
+.info-block p {
+  margin: 0;
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+.map-wrapper {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border);
+}
+
+.contact-map {
+  height: 280px;
+  width: 100%;
+  background: var(--color-bg-alt);
+}
+
+.contact-form-section {
+  background: var(--color-surface);
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+}
+
+.form-section-title {
+  font-size: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(232, 93, 93, 0.15);
+}
+
+.contact-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.btn-submit {
+  margin-top: 0.5rem;
+  padding: 0.85rem 1.5rem;
+  width: 100%;
+  max-width: 200px;
+}
+
+@media (max-width: 768px) {
+  .contact-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-map {
+    height: 240px;
+  }
+}

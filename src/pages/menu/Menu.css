@@ -1,0 +1,84 @@
+.menu-main {
+  flex: 1;
+  padding-bottom: 3rem;
+}
+
+.menu-intro {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 1.5rem;
+  text-align: center;
+}
+
+.menu-title {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  margin-bottom: 0.75rem;
+  color: var(--color-text);
+}
+
+.menu-desc {
+  color: var(--color-text-muted);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.menu-filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0 1.5rem 2rem;
+}
+
+.filter-btn {
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-border);
+  background: var(--color-surface);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  transition: border-color var(--transition), background var(--transition), color var(--transition);
+}
+
+.filter-btn:hover {
+  border-color: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.filter-btn-active {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: white;
+}
+
+.filter-btn-active:hover {
+  border-color: var(--color-primary-dark);
+  background: var(--color-primary-dark);
+  color: white;
+}
+
+.menu-grid-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.menu-empty {
+  text-align: center;
+  color: var(--color-text-muted);
+  padding: 3rem;
+}
+
+@media (max-width: 600px) {
+  .menu-grid {
+    grid-template-columns: 1fr;
+    max-width: 340px;
+    margin: 0 auto;
+  }
+}

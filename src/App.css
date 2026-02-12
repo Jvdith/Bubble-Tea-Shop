@@ -1,0 +1,6 @@
+/* App-level layout — sin estilos duplicados de .product-grid */
+#root {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}

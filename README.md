@@ -99,4 +99,4 @@ https://www.figma.com/community/file/1547444497246071269
 
 ## License
 
-This project is for educational use. Replace with your own license if you publish it.
+This project is for educational use only.

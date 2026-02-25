@@ -91,9 +91,9 @@ git push -u origin develop
 
 ---
 
-## Images and assets
+## Figma inspiration
 
-Product images are loaded from external URLs (e.g. Unsplash) with web-appropriate dimensions (e.g. `?w=400` or `?w=600`) so the repo stays small and images are suitable for web. For custom assets, keep file sizes and resolutions adequate for web (see the Shopify guide above). The repository is kept under 50MB by ignoring `node_modules`, `dist`, and other build artifacts (see `.gitignore`). Product images are loaded from external URLs at web-appropriate resolutions.
+https://www.figma.com/community/file/1547444497246071269
 
 ---
 

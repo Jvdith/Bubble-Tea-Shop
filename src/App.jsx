@@ -3,6 +3,7 @@ import Home from './pages/home/Home';
 import Contact from './pages/contact/Contact';
 import Menu from './pages/menu/Menu';
 import Legal from './pages/legal/Legal';
+import Forum from './pages/forum/Forum';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/menu" element={<Menu />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/legal" element={<Legal />} />
+        <Route path="/forum" element={<Forum />} />
         <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
     </BrowserRouter>

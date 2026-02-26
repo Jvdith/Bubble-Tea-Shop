@@ -1,0 +1,71 @@
+.forum-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  flex: 1;
+}
+
+.forum-title {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.search-box {
+  max-width: 500px;
+  margin: 0 auto 2rem;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #b8d4e0;
+  border-radius: 999px;
+  font-size: 1rem;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.filter-btn {
+  padding: 0.5rem 1.25rem;
+  border: 2px solid #b8d4e0;
+  border-radius: 999px;
+  background: white;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.filter-btn.active {
+  background: #5a8fa8;
+  color: white;
+  border-color: #5a8fa8;
+}
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.loading, .no-results {
+  text-align: center;
+  padding: 3rem;
+  color: #4a6578;
+}
+
+@media (max-width: 600px) {
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .filter-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

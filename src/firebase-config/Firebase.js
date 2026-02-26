@@ -38,7 +38,6 @@ export const addReview = async (reviewData) => {
       rating: reviewData.rating,
       comment: reviewData.comment,
       date: new Date().toISOString().split('T')[0],
-      likes: 0,
     };
 
     console.log("Saved:", newReview);

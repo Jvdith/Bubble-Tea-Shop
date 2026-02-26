@@ -103,7 +103,7 @@ const AddReviewForm = ({ onReviewAdded }) => {
             minLength="5"
           />
           <small className="char-count">
-            {formData.comment.length}/500 caracteres
+            {formData.comment.length}/50 caracteres
           </small>
         </div>
 

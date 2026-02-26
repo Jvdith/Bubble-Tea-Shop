@@ -55,20 +55,3 @@
   color: #4a6578;
   line-height: 1.5;
 }
-
-.review-card-like {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border: none;
-  background: #e8f2f7;
-  border-radius: 999px;
-  cursor: pointer;
-  margin-top: 1rem;
-}
-
-.review-card-liked {
-  background: #5a8fa8;
-  color: white;
-}

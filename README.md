@@ -1,6 +1,6 @@
 # Bubbly — Bubble Tea Shop
 
-A responsive single-page application for a bubble tea shop, built with React and Vite. It includes a product catalog, an interactive map, and a contact form.
+A responsive single-page application for a bubble tea shop, built with React and Vite. It includes a product catalog, an interactive map, a contact form and a review section powered by Firebase.
 
 ---
 

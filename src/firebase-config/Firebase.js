@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, addDoc} from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBD42LGaSoMx3Z1ZgCCbjoqnXTqFXT-iDY",
@@ -26,5 +26,29 @@ export const getReviews = async () => {
   } catch (error) {
     console.error("Error fetching reviews:", error);
     return [];
+  }
+};
+
+export const addReview = async (reviewData) => {
+  try {
+    const reviewsCollection = collection(db, 'reviews');
+
+    const newReview = {
+      author: reviewData.author,
+      rating: reviewData.rating,
+      comment: reviewData.comment,
+      date: new Date().toISOString().split('T')[0],
+      likes: 0,
+    };
+
+    console.log("Saved:", newReview);
+
+    const docRef = await addDoc(reviewsCollection, newReview);
+    console.log("Review shared with ID:", docRef.id);
+    return { success: true, id: docRef.id };
+
+  } catch (error) {
+    console.error("Error saving review", error);
+    return { success: false, error: error.message };
   }
 };

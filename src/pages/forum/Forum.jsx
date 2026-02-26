@@ -2,64 +2,82 @@ import { useState, useEffect } from 'react';
 import Header from '../../components/header/Header';
 import Footer from '../../components/footer/Footer';
 import ReviewCard from '../../components/review-card/ReviewCard';
+import AddReviewForm from './AddReviewForm'; 
 import { getReviews } from '../../firebase-config/Firebase';
 import './Forum.css';
 
 const Forum = () => {
   const [reviews, setReviews] = useState([]);
-  const [filteredReviews, setFilteredReviews] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [showForm, setShowForm] = useState(false);
+
+ 
+  const loadReviews = async () => {
+    setLoading(true);
+    const data = await getReviews();
+    setReviews(data);
+    setLoading(false);
+  };
+
 
   useEffect(() => {
-    const loadReviews = async () => {
-      setLoading(true);
-      const data = await getReviews();
-      setReviews(data);
-      setFilteredReviews(data);
-      setLoading(false);
-    };
     loadReviews();
   }, []);
-
-  useEffect(() => {
-    let result = reviews;
-    
-    if (selectedCategory !== 'all') {
-      result = result.filter(r => r.product === selectedCategory);
-    }
-    
-    if (searchTerm) {
-      const term = searchTerm.toLowerCase();
-      result = result.filter(r => 
-        r.title.toLowerCase().includes(term) ||
-        r.comment.toLowerCase().includes(term)
-      );
-    }
-    
-    setFilteredReviews(result);
-  }, [reviews, selectedCategory, searchTerm]);
 
   return (
     <div className="app-container">
       <Header />
       <main className="forum-main">
-        <h1 className="forum-title">Client Reviews</h1>
         
+      
+        <div className="forum-header">
+          <h1 className="forum-title">Customer Reviews</h1>
+          <button 
+            className="btn-toggle-form"
+            onClick={() => setShowForm(!showForm)}
+          >
+            {showForm ? 'Close' : 'Write a review'}
+          </button>
+        </div>
+
+       
+        <div className="forum-stats">
+          <div className="stat-card">
+            <span className="stat-value">{reviews.length}</span>
+            <span className="stat-label">Reviews</span>
+          </div>
+        </div>
+
+    
+        {showForm && (
+          <AddReviewForm onReviewAdded={() => {
+            loadReviews();      
+            setShowForm(false);    
+          }} />
+        )}
+
         {loading ? (
           <div className="loading">Loading reviews...</div>
         ) : (
-          <div className="reviews-grid">
-            {filteredReviews.map(review => (
-              <ReviewCard key={review.id} review={review} />
-            ))}
+          <>
+            <p className="results-count">
+              {reviews.length} reviews
+            </p>
+            <div className="reviews-grid">
+              {reviews.map(review => (
+                <ReviewCard key={review.id} review={review} />
+              ))}
+            </div>
+          </>
+        )}
+
+      
+        {!loading && reviews.length === 0 && (
+          <div className="no-results">
+            <p>No reviews yet.</p>
           </div>
         )}
-        
-        {!loading && filteredReviews.length === 0 && (
-          <p className="no-results">No reviews found</p>
-        )}
+
       </main>
       <Footer />
     </div>

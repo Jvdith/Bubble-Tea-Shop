@@ -5,58 +5,90 @@
   flex: 1;
 }
 
+.forum-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
 .forum-title {
   font-size: 2rem;
-  text-align: center;
-  margin-bottom: 2rem;
+  color: var(--color-text);
+  margin: 0;
 }
 
-.search-box {
-  max-width: 500px;
-  margin: 0 auto 2rem;
-}
-
-.search-box input {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border: 2px solid #b8d4e0;
-  border-radius: 999px;
-  font-size: 1rem;
-}
-
-.filter-buttons {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 2rem;
-}
-
-.filter-btn {
-  padding: 0.5rem 1.25rem;
-  border: 2px solid #b8d4e0;
-  border-radius: 999px;
-  background: white;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.filter-btn.active {
-  background: #5a8fa8;
+.btn-toggle-form {
+  background: var(--color-primary);
   color: white;
-  border-color: #5a8fa8;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.btn-toggle-form:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-2px);
+}
+
+.forum-stats {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+
+.stat-card {
+  background: var(--color-surface);
+  padding: 1rem 2rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  text-align: center;
+  min-width: 120px;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  display: block;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.results-count {
+  margin-bottom: 1rem;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
 }
 
 .reviews-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(300px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
+  margin-top: 1rem;
 }
 
 .loading, .no-results {
   text-align: center;
   padding: 3rem;
-  color: #4a6578;
+  color: var(--color-text-muted);
+}
+
+@media (max-width: 992px) {
+  .reviews-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 600px) {
@@ -64,8 +96,12 @@
     grid-template-columns: 1fr;
   }
   
-  .filter-buttons {
+  .forum-header {
     flex-direction: column;
-    align-items: stretch;
+    text-align: center;
+  }
+  
+  .btn-toggle-form {
+    width: 100%;
   }
 }

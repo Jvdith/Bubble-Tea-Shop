@@ -9,10 +9,10 @@ You can view the live application here:
 https://bubbly-369ad.web.app
 
 ---
-## 📰 RSS Feed
+## RSS Feed
 
 Bubbly provides an RSS feed with the latest news and events:
-![Bubbly RSS Feed in RSS Dog](./Bubble-Tea-Shop/dist/assets/rss-image.png)
+![Bubbly RSS Feed](./src/assets/rss-image.png)
 
 ## Table of Contents
 

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Bubbly - Bubble Tea News</title>
+    <link>https://bubbly-369ad.web.app/news</link>
+    <description>Latest news from Bubbly Bubble Tea Shop</description>
+    
+    <item>
+      <title>New Flavor: Coco Tea </title>
+      <link>https://bubbly-369ad.web.app/news/1</link>
+      <description>Try our refreshing new summer flavor!</description>
+      <pubDate>Sat, 14 Mar 2026 10:00:00 GMT</pubDate>
+    </item>
+    
+    <item>
+      <title>2x1 on Classics</title>
+      <link>https://bubbly-369ad.web.app/news/2</link>
+      <description>All April long, 2x1 on classic bubble teas</description>
+      <pubDate>Fri, 13 Mar 2026 09:00:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>

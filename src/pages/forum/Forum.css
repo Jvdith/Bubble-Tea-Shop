@@ -79,7 +79,8 @@
   margin-top: 1rem;
 }
 
-.loading, .no-results {
+.loading,
+.no-results {
   text-align: center;
   padding: 3rem;
   color: var(--color-text-muted);
@@ -95,13 +96,86 @@
   .reviews-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .forum-header {
     flex-direction: column;
     text-align: center;
   }
-  
+
   .btn-toggle-form {
     width: 100%;
   }
+}
+
+
+.message-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  font-weight: 500;
+  animation: slideIn 0.3s ease;
+}
+
+.message-badge.success {
+  background: #d4edda;
+  color: #155724;
+}
+
+.message-badge.error {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.review-wrapper {
+  position: relative;
+}
+
+.review-btn-edit,
+.review-btn-delete {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.review-btn-edit {
+  background: var(--color-primary);
+  color: white;
+}
+
+.review-btn-edit:hover {
+  background: var(--color-primary-dark);
+  transform: scale(1.1);
+}
+
+.review-btn-delete {
+  background: #c48383;
+  color: white;
+}
+
+.review-btn-delete:hover {
+  background: #a86363;
+  transform: scale(1.1);
+}
+
+.review-actions {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  flex-direction: row;  /* ← HORIZONTAL */
+  gap: 0.25rem;
+  opacity: 1;
+  transition: opacity 0.2s;
+  z-index: 10;
+}
+
+.review-wrapper:hover .review-actions {
+  opacity: 1;
 }

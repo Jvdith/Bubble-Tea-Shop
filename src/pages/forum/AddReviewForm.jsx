@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { addReview } from '../../firebase-config/Firebase';
 import './AddReviewForm.css';
 
-const AddReviewForm = ({ onReviewAdded }) => {
+const AddReviewForm = ({ onReviewAdded, onUpdate, editingReview, onCancel }) => {
   const [formData, setFormData] = useState({
     author: '',
     rating: 5,
@@ -13,46 +13,59 @@ const AddReviewForm = ({ onReviewAdded }) => {
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setSuccessMessage('');
-    setErrorMessage('');
-
-
-    if (formData.author.length < 2) {
-      setErrorMessage('Name is too short');
-      setIsSubmitting(false);
-      return;
-    }
-
-    if (formData.comment.length < 5) {
-      setErrorMessage('Review is too short');
-      setIsSubmitting(false);
-      return;
-    }
-
-    const result = await addReview(formData);
-    
-    if (result.success) {
-      setSuccessMessage('The review has been shared!');
+    useEffect(() => {
+    if (editingReview) {
+      setFormData({
+        author: editingReview.author,
+        rating: editingReview.rating,
+        comment: editingReview.comment
+      });
+    } else {
       setFormData({
         author: '',
         rating: 5,
         comment: ''
       });
-      
-      if (onReviewAdded) {
-        setTimeout(() => {
-          onReviewAdded();
-        }, 1500);
-      }
+    }
+  }, [editingReview]);
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+  setErrorMessage('');
+
+  
+  if (formData.author.length < 2) {
+    setErrorMessage('Name is too short');
+    setIsSubmitting(false);
+    return;
+  }
+
+  if (formData.comment.length < 5) {
+    setErrorMessage('Review is too short');
+    setIsSubmitting(false);
+    return;
+  }
+
+ 
+  if (editingReview) {
+    console.log("onUpdate");
+    await onUpdate(editingReview.id, formData);
+  } 
+ 
+  else {
+    console.log("addReview");
+    const result = await addReview(formData);
+    if (result.success) {
+      console.log("onReviewAdded");
+      onReviewAdded(); 
     } else {
       setErrorMessage('Error, try again!');
     }
-    
-    setIsSubmitting(false);
-  };
+  }
+  
+  setIsSubmitting(false);
+};
 
   return (
     <section className="add-review-section">
@@ -119,20 +132,22 @@ const AddReviewForm = ({ onReviewAdded }) => {
           </div>
         )}
 
-        <button 
-          type="submit" 
-          className="btn-submit-review"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? (
-            <>
-              <span className="spinner"></span>
-              Publicando...
-            </>
-          ) : (
-            'Publicar reseña'
-          )}
-        </button>
+       <div className="form-actions">
+          <button 
+            type="button" 
+            className="btn-cancel"
+            onClick={onCancel}
+          >
+            Cancelar
+          </button>
+          <button 
+            type="submit" 
+            className="btn-submit-review"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Saving...' : (editingReview ? 'Update' : 'Publish')}
+          </button>
+        </div>
       </form>
     </section>
   );

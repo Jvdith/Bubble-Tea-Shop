@@ -4,6 +4,16 @@ A responsive single-page application for a bubble tea shop, built with React and
 
 ---
 
+## Now Live Demo on Firebase Hostng!
+You can view the live application here:
+https://bubbly-369ad.web.app
+
+---
+## 📰 RSS Feed
+
+Bubbly provides an RSS feed with the latest news and events:
+![Bubbly RSS Feed in RSS Dog](./Bubble-Tea-Shop/dist/assets/rss-image.png)
+
 ## Table of Contents
 
 - [Description of the main page](#description-of-the-main-page)

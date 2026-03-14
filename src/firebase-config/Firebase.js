@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, addDoc} from 'firebase/firestore';
+import { getFirestore, collection, getDocs, addDoc, doc, updateDoc, deleteDoc, getDoc} from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBD42LGaSoMx3Z1ZgCCbjoqnXTqFXT-iDY",
@@ -49,6 +49,63 @@ export const addReview = async (reviewData) => {
 
   } catch (error) {
     console.error("Error saving review", error);
+    return { success: false, error: error.message };
+  }
+};
+
+export const getReviewById = async (id) => {
+  try {
+    const reviewRef = doc(db, 'reviews', id);
+    const reviewSnap = await getDoc(reviewRef);
+    
+    if (reviewSnap.exists()) {
+      return { success: true, data: { id: reviewSnap.id, ...reviewSnap.data() } };
+    } else {
+      return { success: false, error: "Review no encontrada" };
+    }
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
+
+export const updateReview = async (id, updatedData) => {
+  try {
+    const reviewRef = doc(db, 'reviews', id);
+    
+    
+    await updateDoc(reviewRef, {
+      author: updatedData.author,
+      rating: updatedData.rating,
+      comment: updatedData.comment,
+    });
+      
+    return { success: true };
+    
+  } catch (error) {
+    console.error("Error updating:", error);
+    return { success: false, error: error.message };
+  }
+};
+
+export const deleteReview = async (id) => {
+  try {
+    const reviewRef = doc(db, 'reviews', id);
+    await deleteDoc(reviewRef);
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting:", error);
+    return { success: false, error: error.message };
+  }
+};
+
+export const updateReviewRating = async (id, newRating) => {
+  try {
+    const reviewRef = doc(db, 'reviews', id);
+    await updateDoc(reviewRef, {
+      rating: newRating
+    });
+    return { success: true };
+  } catch (error) {
     return { success: false, error: error.message };
   }
 };

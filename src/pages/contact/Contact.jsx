@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import L from 'leaflet';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import Header from '../../components/header/Header';
 import Footer from '../../components/footer/Footer';
 import 'leaflet/dist/leaflet.css';
 import iconUrl from 'leaflet/dist/images/marker-icon.png';
@@ -34,7 +33,6 @@ const Contact = () => {
 
   return (
     <div className="app-container">
-      <Header />
       <main className="contact-main">
         <section className="contact-intro">
           <h1 className="contact-title">Find us</h1>

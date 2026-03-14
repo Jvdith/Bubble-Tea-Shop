@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Header from '../../components/header/Header';
 import Footer from '../../components/footer/Footer';
 import './Legal.css';
 
@@ -15,7 +14,6 @@ const Legal = () => {
 
   return (
     <div className="app-container">
-      <Header />
       <main className="legal-main">
         <h1 className="legal-title">Legal notice</h1>
         <nav className="legal-nav">

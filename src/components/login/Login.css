@@ -4,7 +4,7 @@
   gap: 0.5rem;
   background: white;
   border: 2px solid var(--color-primary);
-  color: var(--color-text);
+  color: var(--color-primary-dark);
   padding: 0.5rem 1rem;
   border-radius: 999px;
   font-weight: 600;

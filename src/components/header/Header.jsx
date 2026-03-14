@@ -1,13 +1,12 @@
+// src/components/header/Header.jsx
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './Header.css';
 import bubbleIcon from '../../assets/bubble-icon.png';
 import Login from '../login/Login';
+import ThemeToggle from '../theme-toggle/ThemeToggle';
 
-
-
-
-const Header = () => {
+const Header = ({ darkMode, setDarkMode }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
@@ -32,8 +31,6 @@ const Header = () => {
             style={{ backgroundImage: `url(${bubbleIcon})` }}
             aria-hidden
           ></span>
-
-
           <span className="logo-text">Bubbly</span>
         </Link>
 
@@ -61,10 +58,13 @@ const Header = () => {
             </Link>
           ))}
         </nav>
-        <div className="header-login">
-          <Login />
-        </div>
 
+        <div className="header-actions">
+          <ThemeToggle darkMode={darkMode} setDarkMode={setDarkMode} />
+          <div className="header-login">
+            <Login />
+          </div>
+        </div>
       </div>
     </header>
   );

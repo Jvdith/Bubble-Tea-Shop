@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import Header from '../../components/header/Header';
 import Footer from '../../components/footer/Footer';
 import './News.css';
 
@@ -59,7 +58,6 @@ const News = () => {
 
   return (
     <div className="app-container">
-      <Header />
       <main className="news-main">
         <h1 className="news-title">News about our Bubbly Shop</h1>
         

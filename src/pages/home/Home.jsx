@@ -1,7 +1,5 @@
-// src/pages/home/Home.jsx
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Header from '../../components/header/Header';
 import Footer from '../../components/footer/Footer';
 import ProductCard from '../../components/product-card/ProductCard';
 import ReviewCard from '../../components/review-card/ReviewCard';
@@ -12,18 +10,15 @@ import './Home.css';
 import heroBg from '../../assets/bubble-background.jpg';
 
 const Home = () => {
-  // Estados para productos destacados
   const featuredIds = new Set([1, 2, 3]);
   const featured = bobaProducts.filter((p) => featuredIds.has(p.id));
 
-  // 📌 ESTADOS PARA REVIEWS (copiados de Forum.jsx)
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingReview, setEditingReview] = useState(null);
   const [message, setMessage] = useState({ type: '', text: '' });
 
-  // Cargar reviews
   const loadReviews = async () => {
     console.log("Loading reviews...");
     setLoading(true);
@@ -37,13 +32,11 @@ const Home = () => {
     loadReviews();
   }, []);
 
-  // Mostrar mensajes
   const showMessage = (type, text) => {
     setMessage({ type, text });
     setTimeout(() => setMessage({ type: '', text: '' }), 3000);
   };
 
-  // Actualizar review
   const handleUpdate = async (id, updatedData) => {
     console.log("handleUpdate", id, updatedData);
     const result = await updateReview(id, updatedData);
@@ -60,14 +53,12 @@ const Home = () => {
     setShowForm(false);
   };
 
-  // Review añadida
   const handleReviewAdded = () => {
     console.log("Review added, loading...");
     loadReviews();
     setShowForm(false);
   };
 
-  // Eliminar review
   const handleDelete = async (id) => {
     const result = await deleteReview(id);
     if (result.success) {
@@ -78,7 +69,6 @@ const Home = () => {
     }
   };
 
-  // Abrir edición
   const handleEditClick = (review) => {
     setEditingReview(review);
     setShowForm(true);
@@ -86,10 +76,8 @@ const Home = () => {
 
   return (
     <div className="app-container">
-      <Header />
       <main className="home-main">
 
-        {/* SECCIÓN HERO (existente) */}
         <section
           className="hero"
           style={{ backgroundImage: `url(${heroBg})` }}
@@ -113,7 +101,6 @@ const Home = () => {
           </div>
         </section>
 
-        {/* SECCIÓN PRODUCTOS DESTACADOS (existente) */}
         <section className="section section-stars">
           <h2 className="section-title">Our favourites</h2>
           <p className="section-desc">Best-sellers. Try these three and tell us which one you like best.</p>
@@ -127,7 +114,6 @@ const Home = () => {
           </Link>
         </section>
 
-        {/* 📌 NUEVA SECCIÓN: REVIEWS */}
         <section className="section section-reviews">
           <div className="reviews-header">
             <h2 className="section-title">Customer Reviews</h2>
@@ -149,7 +135,7 @@ const Home = () => {
             </button>
           </div>
 
-          {/* Formulario de reviews */}
+         
           {showForm && (
             <AddReviewForm
               onReviewAdded={handleReviewAdded}
@@ -162,7 +148,6 @@ const Home = () => {
             />
           )}
 
-          {/* Lista de reviews */}
           {loading ? (
             <div className="loading">Loading reviews...</div>
           ) : (
@@ -201,7 +186,6 @@ const Home = () => {
           )}
         </section>
 
-        {/* SECCIÓN CTA (existente) */}
         <section className="section section-cta">
           <div className="cta-box">
             <h2 className="cta-title">Fancy customising?</h2>

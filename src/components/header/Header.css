@@ -142,3 +142,20 @@
     font-size: 1.05rem;
   }
 }
+
+.header-login {
+  margin-left: 1rem;
+}
+
+@media (max-width: 768px) {
+  .header-login {
+    margin: 1rem 0 0;
+    width: 100%;
+  }
+  
+  .header-login .login-btn,
+  .header-login .user-info {
+    width: 100%;
+    justify-content: center;
+  }
+}

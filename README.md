@@ -14,6 +14,14 @@ https://bubbly-369ad.web.app
 Bubbly provides an RSS feed with the latest news and events:
 ![Bubbly RSS Feed](./src/assets/rss-image.png)
 
+---
+
+## Authentication with Google
+
+Bubbly uses **Firebase Authentication** to allow users to sign in with their Google accounts. This feature provides a secure login with Google Sign-In.
+
+---
+
 ## Table of Contents
 
 - [Description of the main page](#description-of-the-main-page)

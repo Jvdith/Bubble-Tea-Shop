@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './Header.css';
 import bubbleIcon from '../../assets/bubble-icon.png';
+import Login from '../login/Login';
 
 
 
@@ -61,6 +62,10 @@ const Header = () => {
             </Link>
           ))}
         </nav>
+        <div className="header-login">
+          <Login />
+        </div>
+
       </div>
     </header>
   );

@@ -4,7 +4,7 @@ A responsive single-page application for a bubble tea shop, built with React and
 
 ---
 
-## Now Live Demo on Firebase Hostng!
+## Now Live Demo on Firebase Hosting!
 You can view the live application here:
 https://bubbly-369ad.web.app
 

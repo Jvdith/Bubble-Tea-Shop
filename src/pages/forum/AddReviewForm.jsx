@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { addReview } from '../../firebase-config/Firebase';
+import { addReview } from '../../services/firebaseService';
 import './AddReviewForm.css';
 
 const AddReviewForm = ({ onReviewAdded, onUpdate, editingReview, onCancel }) => {

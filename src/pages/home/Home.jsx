@@ -5,7 +5,7 @@ import ProductCard from '../../components/product-card/ProductCard';
 import ReviewCard from '../../components/review-card/ReviewCard';
 import AddReviewForm from '../forum/AddReviewForm';
 import { bobaProducts } from '../../data/products-data';
-import { getReviews, updateReview, deleteReview } from '../../firebase-config/Firebase';
+import { getReviews, updateReview, deleteReview } from '../../services/firebaseService';
 import './Home.css';
 import heroBg from '../../assets/bubble-background.jpg';
 

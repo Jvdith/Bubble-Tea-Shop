@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getReviews, saveBulkReviews } from '../../services/firebaseService';
+import { getReviews, saveBulkReviews, clearAllReviews } from '../../services/firebaseService';
 import { parseCSV, parseXML, parseXLSX, generateXML, downloadFile, downloadXLSX } from '../../services/dataParser';
 import Footer from '../../components/footer/Footer';
 import './DataManagement.css';
@@ -8,7 +8,7 @@ const DataManagement = () => {
     const [reviews, setReviews] = useState([]);
     const [importedData, setImportedData] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState('');
+    const [message, setMessage] = useState({ type: '', text: '' });
 
     useEffect(() => {
         fetchCurrentReviews();
@@ -19,6 +19,11 @@ const DataManagement = () => {
         const data = await getReviews();
         setReviews(data);
         setLoading(false);
+    };
+
+    const showMsg = (type, text) => {
+        setMessage({ type, text });
+        setTimeout(() => setMessage({ type: '', text: '' }), 5000);
     };
 
     const handleFileUpload = async (e) => {
@@ -39,13 +44,40 @@ const DataManagement = () => {
             } else if (extension === 'xlsx') {
                 data = await parseXLSX(file);
             } else {
-                setMessage('Unsupported format');
+                showMsg('error', 'Unsupported format');
                 return;
             }
             setImportedData(data);
-            setMessage(`Imported ${data.length} items. You can edit them in the table before saving.`);
+            showMsg('success', `Imported ${data.length} items. You can edit them in the table below.`);
         } catch (error) {
-            setMessage('Error parsing file: ' + error.message);
+            showMsg('error', 'Error parsing file: ' + error.message);
+        }
+    };
+
+    const handleLoadSample = async (format) => {
+        try {
+            const response = await fetch(`/datos.${format}`);
+            if (!response.ok) throw new Error('Sample file not found');
+            let data = [];
+            if (format === 'json') {
+                data = await response.json();
+            } else if (format === 'csv') {
+                const text = await response.text();
+                // We reuse parseCSV but we need a File-like object or text
+                // For simplicity, we can fetch and use Papa directly if needed, 
+                // but let's just use the file text logic.
+                data = await new Promise(r => Papa.parse(text, {header:true, complete:res => r(res.data)}));
+            } else if (format === 'xml') {
+                const text = await response.text();
+                data = parseXML(text);
+            } else if (format === 'xlsx') {
+                const blob = await response.blob();
+                data = await parseXLSX(blob);
+            }
+            setImportedData(data);
+            showMsg('success', `Sample ${format.toUpperCase()} loaded!`);
+        } catch (error) {
+            showMsg('error', 'Error loading sample: ' + error.message);
         }
     };
 
@@ -60,13 +92,27 @@ const DataManagement = () => {
         setLoading(true);
         const result = await saveBulkReviews(importedData);
         if (result.success) {
-            setMessage(`Successfully saved ${result.count} reviews to Firebase!`);
+            showMsg('success', `Successfully saved ${result.count} reviews to Firebase!`);
             setImportedData([]);
             fetchCurrentReviews();
         } else {
-            setMessage('Error saving to Firebase: ' + result.error);
+            showMsg('error', 'Error saving to Firebase: ' + result.error);
         }
         setLoading(false);
+    };
+
+    const handleClearFirebase = async () => {
+        if (window.confirm('Are you sure you want to delete ALL reviews from Firebase? This cannot be undone.')) {
+            setLoading(true);
+            const result = await clearAllReviews();
+            if (result.success) {
+                showMsg('success', 'Firestore cleared successfully!');
+                fetchCurrentReviews();
+            } else {
+                showMsg('error', 'Error clearing Firestore: ' + result.error);
+            }
+            setLoading(false);
+        }
     };
 
     const handleExport = (format) => {
@@ -105,9 +151,28 @@ const DataManagement = () => {
                                 onChange={handleFileUpload}
                                 id="file-upload"
                             />
-                            <label htmlFor="file-upload" className="btn-secondary">Choose File</label>
+                        <label htmlFor="file-upload" className="btn-secondary">Choose File</label>
                         </div>
-                        {message && <p className="status-message">{message}</p>}
+
+                        <div className="help-info">
+                            <p>💡 <b>How it works:</b> Import a file or load a sample. You can then edit the data in the table and click "Save all to Firebase" to synchronize it.</p>
+                        </div>
+
+                        <div className="sample-loaders">
+                            <p>Or load a sample to test:</p>
+                            <div className="sample-btn-grid">
+                                <button onClick={() => handleLoadSample('json')}>Sample JSON</button>
+                                <button onClick={() => handleLoadSample('csv')}>Sample CSV</button>
+                                <button onClick={() => handleLoadSample('xml')}>Sample XML</button>
+                                <button onClick={() => handleLoadSample('xlsx')}>Sample XLSX</button>
+                            </div>
+                        </div>
+
+                        {message.text && (
+                            <div className={`status-message ${message.type}`}>
+                                {message.text}
+                            </div>
+                        )}
 
                         {importedData.length > 0 && (
                             <div className="imported-preview">
@@ -150,6 +215,12 @@ const DataManagement = () => {
                             <button className="btn-export" onClick={() => handleExport('csv')}>Download CSV</button>
                             <button className="btn-export" onClick={() => handleExport('xml')}>Download XML</button>
                             <button className="btn-export" onClick={() => handleExport('xlsx')}>Download XLSX</button>
+                        </div>
+                        <div className="danger-zone">
+                            <h3>Maintenance</h3>
+                            <button className="btn-danger" onClick={handleClearFirebase} disabled={loading}>
+                                Delete all from Firebase
+                            </button>
                         </div>
                     </div>
                 </div>

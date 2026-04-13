@@ -109,3 +109,22 @@ export const saveBulkReviews = async (reviews) => {
         return { success: false, error: error.message };
     }
 };
+
+/**
+ * Deletes all reviews from the collection (DANGEROUS - use for testing)
+ */
+export const clearAllReviews = async () => {
+    try {
+        const reviewsCollection = collection(db, REVIEWS_COLLECTION);
+        const snapshot = await getDocs(reviewsCollection);
+        const batch = writeBatch(db);
+        snapshot.docs.forEach((doc) => {
+            batch.delete(doc.ref);
+        });
+        await batch.commit();
+        return { success: true };
+    } catch (error) {
+        console.error("Error clearing reviews:", error);
+        return { success: false, error: error.message };
+    }
+};

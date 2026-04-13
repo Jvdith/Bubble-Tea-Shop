@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Header from '../../components/header/Header';
 import Footer from '../../components/footer/Footer';
 import ProductCard from '../../components/product-card/ProductCard';
 import { bobaProducts, categories } from '../../data/products-data';
@@ -15,7 +14,6 @@ const Menu = () => {
 
   return (
     <div className="app-container">
-      <Header />
       <main className="menu-main">
         <section className="menu-intro">
           <h1 className="menu-title">Our menu</h1>

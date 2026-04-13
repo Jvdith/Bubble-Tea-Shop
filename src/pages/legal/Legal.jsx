@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Header from '../../components/header/Header';
 import Footer from '../../components/footer/Footer';
 import './Legal.css';
 
@@ -15,7 +14,6 @@ const Legal = () => {
 
   return (
     <div className="app-container">
-      <Header />
       <main className="legal-main">
         <h1 className="legal-title">Legal notice</h1>
         <nav className="legal-nav">
@@ -27,10 +25,10 @@ const Legal = () => {
         <section id="privacy" className="legal-section">
           <h2>Privacy policy</h2>
           <p>
-            BobaTime collects and processes the information you provide when filling in forms or contacting us.
+            Bubbly collects and processes the information you provide when filling in forms or contacting us.
             We use your data only to respond to your enquiry, process orders or send you information about
             our products if you have given your consent. We do not share your data with third parties except where required by law.
-            You may exercise your rights of access, rectification, erasure and objection by contacting hello@bobatime.com.
+            You may exercise your rights of access, rectification, erasure and objection by contacting Bubbly@BubbleTeaShop.com.
           </p>
         </section>
 

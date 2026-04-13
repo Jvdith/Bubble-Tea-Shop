@@ -1,6 +1,24 @@
 # Bubbly — Bubble Tea Shop
 
-A responsive single-page application for a bubble tea shop, built with React and Vite. It includes a product catalog, an interactive map, and a contact form.
+A responsive single-page application for a bubble tea shop, built with React and Vite. It includes a product catalog, an interactive map, a contact form and a review section powered by Firebase.
+
+---
+
+## Now Live Demo on Firebase Hosting!
+You can view the live application here:
+https://bubbly-369ad.web.app
+
+---
+## RSS Feed
+
+Bubbly provides an RSS feed with the latest news and events:
+![Bubbly RSS Feed](./src/assets/rss-image.png)
+
+---
+
+## Authentication with Google
+
+Bubbly uses **Firebase Authentication** to allow users to sign in with their Google accounts. This feature provides a secure login with Google Sign-In.
 
 ---
 
@@ -9,6 +27,7 @@ A responsive single-page application for a bubble tea shop, built with React and
 - [Description of the main page](#description-of-the-main-page)
 - [Third-party components](#third-party-components)
 - [Getting started](#getting-started)
+- [Data Import and Export](#data-import-and-export)
 - [Project structure](#project-structure)
 - [Branches](#branches)
 - [Images and assets](#images-and-assets)
@@ -64,12 +83,31 @@ npm run preview
 
 ---
 
+## Data Import and Export
+
+Bubbly supports importing and exporting reviews in multiple formats. This feature is located in the **Data Management** page.
+
+### Supported Formats:
+- **JSON, CSV, XML, and XLSX**.
+
+### Sample Import Files:
+You can download these examples to test the import functionality:
+- [datos.json](./public/datos.json)
+- [datos.csv](./public/datos.csv)
+- [datos.xml](./public/datos.xml)
+- [datos.xlsx](./public/datos.xlsx)
+
+The application allows you to preview and edit the data in a table before synchronizing it with **Firebase Firestore**. Access to Firebase is centralized in the `src/services/` directory.
+
+---
+
 ## Project structure
 
 - `src/`
-  - `components/` — Reusable UI (e.g. `header`, `footer`, `product-card`). Each in its own folder with PascalCase component and CSS files.
-  - `pages/` — Route-level views: `home`, `menu`, `contact`, `legal`. Same convention.
-  - `data/` — `products-data.js` (kebab-case): JSON-like array of products used on Home and Menu.
+  - `components/` — Reusable UI (e.g. `header`, `footer`, `product-card`).
+  - `pages/` — Route-level views.
+  - `services/` — Centralized access to Firebase (Firestore, Auth) and data processing utilities.
+  - `data/` — Static data like `products-data.js`.
   - `App.jsx` — Router and routes.
   - `index.css` — Global design tokens (colours, typography, spacing).
 
@@ -91,12 +129,12 @@ git push -u origin develop
 
 ---
 
-## Images and assets
+## Figma inspiration
 
-Product images are loaded from external URLs (e.g. Unsplash) with web-appropriate dimensions (e.g. `?w=400` or `?w=600`) so the repo stays small and images are suitable for web. For custom assets, keep file sizes and resolutions adequate for web (see the Shopify guide above). The repository is kept under 50MB by ignoring `node_modules`, `dist`, and other build artifacts (see `.gitignore`). Product images are loaded from external URLs at web-appropriate resolutions.
+https://www.figma.com/community/file/1547444497246071269
 
 ---
 
 ## License
 
-This project is for educational use. Replace with your own license if you publish it.
+This project is for educational use only.

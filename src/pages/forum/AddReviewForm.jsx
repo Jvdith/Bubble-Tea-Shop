@@ -52,7 +52,8 @@ const AddReviewForm = ({ onReviewAdded, onUpdate, editingReview, onCancel }) => 
       if (result.success) {
         onReviewAdded();
       } else {
-        setErrorMessage('Error, try again!');
+        setErrorMessage(`Error: ${result.error || 'Try again!'}`);
+        console.error("Firebase Add Review Error:", result.error);
       }
     }
     

@@ -91,10 +91,10 @@ const Home = () => {
               Handcrafted with natural ingredients, topped with our signature pearl pop.
             </p>
             <div className="hero-actions">
-              <Link to="/menu" className="btn btn-primary">
+              <Link to="/menu" className="btn btn-primary hero-btn">
                 View menu
               </Link>
-              <Link to="/contact" className="btn btn-secondary">
+              <Link to="/contact" className="btn btn-secondary hero-btn">
                 Find us
               </Link>
             </div>

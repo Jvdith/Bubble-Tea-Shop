@@ -43,10 +43,11 @@ export const getReviews = async () => {
 export const addReview = async (reviewData) => {
     try {
         const reviewsCollection = collection(db, REVIEWS_COLLECTION);
+        const rating = Number(reviewData.rating);
         const newReview = {
-            author: reviewData.author,
-            rating: Number(reviewData.rating),
-            comment: reviewData.comment,
+            author: reviewData.author || 'Anonymous',
+            rating: isNaN(rating) ? 5 : rating,
+            comment: reviewData.comment || '',
             date: reviewData.date || new Date().toISOString().split('T')[0],
         };
         const docRef = await addDoc(reviewsCollection, newReview);
@@ -84,47 +85,3 @@ export const deleteReview = async (id) => {
     }
 };
 
-/**
- * Saves multiple reviews at once using batch (max 500 per batch per Firebase limits)
- */
-export const saveBulkReviews = async (reviews) => {
-    try {
-        const batch = writeBatch(db);
-        const reviewsRect = collection(db, REVIEWS_COLLECTION);
-        
-        reviews.forEach((review) => {
-            const newDocRef = doc(reviewsRect); // Generate new ID
-            batch.set(newDocRef, {
-                author: review.author || 'Anonymous',
-                rating: Number(review.rating) || 5,
-                comment: review.comment || '',
-                date: review.date || new Date().toISOString().split('T')[0],
-            });
-        });
-
-        await batch.commit();
-        return { success: true, count: reviews.length };
-    } catch (error) {
-        console.error("Error in bulk saving:", error);
-        return { success: false, error: error.message };
-    }
-};
-
-/**
- * Deletes all reviews from the collection (DANGEROUS - use for testing)
- */
-export const clearAllReviews = async () => {
-    try {
-        const reviewsCollection = collection(db, REVIEWS_COLLECTION);
-        const snapshot = await getDocs(reviewsCollection);
-        const batch = writeBatch(db);
-        snapshot.docs.forEach((doc) => {
-            batch.delete(doc.ref);
-        });
-        await batch.commit();
-        return { success: true };
-    } catch (error) {
-        console.error("Error clearing reviews:", error);
-        return { success: false, error: error.message };
-    }
-};

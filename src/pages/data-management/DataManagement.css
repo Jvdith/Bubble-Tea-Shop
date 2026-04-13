@@ -1,6 +1,6 @@
 .admin-main {
     padding: 2rem;
-    max-width: 1200px;
+    max-width: 900px;
     margin: 0 auto;
     min-height: 80vh;
 }
@@ -16,16 +16,10 @@
     font-weight: 700;
 }
 
-.admin-panels {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+.converter-container {
+    display: flex;
+    flex-direction: column;
     gap: 2rem;
-}
-
-@media (max-width: 900px) {
-    .admin-panels {
-        grid-template-columns: 1fr;
-    }
 }
 
 .admin-card {
@@ -43,8 +37,20 @@
     margin-bottom: 20px;
 }
 
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.card-header h2 {
+    margin-bottom: 0;
+}
+
 .file-input-wrapper {
     margin: 20px 0;
+    text-align: center;
 }
 
 #file-upload {
@@ -53,7 +59,7 @@
 
 .btn-secondary {
     display: inline-block;
-    padding: 10px 20px;
+    padding: 12px 24px;
     background: transparent;
     border: 2px solid var(--color-primary);
     color: var(--color-primary);
@@ -68,26 +74,15 @@
     background: var(--color-bg-alt);
 }
 
-.export-buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-
-.btn-export {
-    padding: 10px;
-    background: var(--color-bg-alt);
-    border: 1px solid var(--color-border);
-    color: var(--color-text);
-    border-radius: 8px;
+.btn-text {
+    background: transparent;
+    border: none;
+    color: #dc2626;
+    font-weight: 500;
     cursor: pointer;
+    text-decoration: underline;
 }
 
-.btn-export:hover {
-    background: var(--color-border);
-}
-
-/* Subtle Status Messages */
 .status-message {
     padding: 10px 15px;
     border-radius: 8px;
@@ -111,7 +106,7 @@
 .table-wrapper {
     overflow-x: auto;
     margin: 20px 0;
-    max-height: 400px;
+    max-height: 500px;
     border: 1px solid var(--color-border);
     border-radius: 8px;
 }
@@ -142,18 +137,35 @@ input[type="text"], input[type="number"] {
     border-radius: 4px;
 }
 
-.btn-primary {
-    width: 100%;
-    padding: 12px;
-    background: var(--color-primary);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 10px;
+.export-buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
 }
 
-.btn-primary:hover {
-    background: var(--color-primary-dark);
+.btn-export-final {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 15px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-export-final:hover {
+    background: var(--color-primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.icon {
+    font-size: 1.2rem;
 }

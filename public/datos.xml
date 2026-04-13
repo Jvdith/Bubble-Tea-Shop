@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<reviews>
+  <review>
+    <author>Sofia Martinez</author>
+    <rating>5</rating>
+    <comment>El mejor boba de la ciudad!</comment>
+    <date>2026-04-07</date>
+  </review>
+  <review>
+    <author>Miguel Angel</author>
+    <rating>4</rating>
+    <comment>Muy refrescante para el verano.</comment>
+    <date>2026-04-06</date>
+  </review>
+</reviews>

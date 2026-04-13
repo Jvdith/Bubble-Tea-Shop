@@ -15,6 +15,7 @@ const Header = ({ darkMode, setDarkMode }) => {
     { to: '/menu', label: 'Menu' },
     { to: '/news', label: 'News' },
     { to: '/contact', label: 'Contact' },
+    { to: '/data', label: 'Data Management' },
   ];
 
   const isActive = (path) => {

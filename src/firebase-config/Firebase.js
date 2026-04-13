@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, addDoc, doc, updateDoc, deleteDoc, getDoc } from 'firebase/firestore';
-import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBD42LGaSoMx3Z1ZgCCbjoqnXTqFXT-iDY",
@@ -15,78 +15,3 @@ const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const provider = new GoogleAuthProvider();
-
-export const signInWithGoogle = async () => {
-  try {
-    const result = await signInWithPopup(auth, provider);
-    return { success: true, user: result.user };
-  } catch (error) {
-    return { success: false, error: error.message };
-  }
-};
-
-export const logout = async () => {
-  try {
-    await signOut(auth);
-    return { success: true };
-  } catch (error) {
-    return { success: false, error: error.message };
-  }
-};
-
-export const getReviews = async () => {
-  try {
-    const reviewsCollection = collection(db, 'reviews');
-    const reviewsSnapshot = await getDocs(reviewsCollection);
-    return reviewsSnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
-  } catch (error) {
-    console.error("Error fetching reviews:", error);
-    return [];
-  }
-};
-
-export const addReview = async (reviewData) => {
-  try {
-    const reviewsCollection = collection(db, 'reviews');
-    const newReview = {
-      author: reviewData.author,
-      rating: reviewData.rating,
-      comment: reviewData.comment,
-      date: new Date().toISOString().split('T')[0],
-    };
-    const docRef = await addDoc(reviewsCollection, newReview);
-    return { success: true, id: docRef.id };
-  } catch (error) {
-    console.error("Error saving review:", error);
-    return { success: false, error: error.message };
-  }
-};
-
-export const updateReview = async (id, updatedData) => {
-  try {
-    const reviewRef = doc(db, 'reviews', id);
-    await updateDoc(reviewRef, {
-      author: updatedData.author,
-      rating: updatedData.rating,
-      comment: updatedData.comment
-    });
-    return { success: true };
-  } catch (error) {
-    console.error("Error updating review:", error);
-    return { success: false, error: error.message };
-  }
-};
-
-export const deleteReview = async (id) => {
-  try {
-    const reviewRef = doc(db, 'reviews', id);
-    await deleteDoc(reviewRef);
-    return { success: true };
-  } catch (error) {
-    console.error("Error deleting review:", error);
-    return { success: false, error: error.message };
-  }
-};

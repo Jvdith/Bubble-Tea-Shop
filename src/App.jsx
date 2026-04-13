@@ -5,6 +5,7 @@ import Contact from './pages/contact/Contact';
 import Menu from './pages/menu/Menu';
 import Legal from './pages/legal/Legal';
 import News from './pages/news/News';
+import DataManagement from './pages/data-management/DataManagement';
 import Header from './components/header/Header';
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/legal" element={<Legal />} />
         <Route path="/news" element={<News />} />
+        <Route path="/data" element={<DataManagement />} />
         <Route path="*" element={<Navigate to="/home" />} />
       </Routes>
     </BrowserRouter>

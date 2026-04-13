@@ -27,6 +27,7 @@ Bubbly uses **Firebase Authentication** to allow users to sign in with their Goo
 - [Description of the main page](#description-of-the-main-page)
 - [Third-party components](#third-party-components)
 - [Getting started](#getting-started)
+- [Data Import and Export](#data-import-and-export)
 - [Project structure](#project-structure)
 - [Branches](#branches)
 - [Images and assets](#images-and-assets)
@@ -82,12 +83,31 @@ npm run preview
 
 ---
 
+## Data Import and Export
+
+Bubbly supports importing and exporting reviews in multiple formats. This feature is located in the **Data Management** page.
+
+### Supported Formats:
+- **JSON, CSV, XML, and XLSX**.
+
+### Sample Import Files:
+You can download these examples to test the import functionality:
+- [datos.json](./public/datos.json)
+- [datos.csv](./public/datos.csv)
+- [datos.xml](./public/datos.xml)
+- [datos.xlsx](./public/datos.xlsx)
+
+The application allows you to preview and edit the data in a table before synchronizing it with **Firebase Firestore**. Access to Firebase is centralized in the `src/services/` directory.
+
+---
+
 ## Project structure
 
 - `src/`
-  - `components/` — Reusable UI (e.g. `header`, `footer`, `product-card`). Each in its own folder with PascalCase component and CSS files.
-  - `pages/` — Route-level views: `home`, `menu`, `contact`, `legal`. Same convention.
-  - `data/` — `products-data.js` (kebab-case): JSON-like array of products used on Home and Menu.
+  - `components/` — Reusable UI (e.g. `header`, `footer`, `product-card`).
+  - `pages/` — Route-level views.
+  - `services/` — Centralized access to Firebase (Firestore, Auth) and data processing utilities.
+  - `data/` — Static data like `products-data.js`.
   - `App.jsx` — Router and routes.
   - `index.css` — Global design tokens (colours, typography, spacing).
 

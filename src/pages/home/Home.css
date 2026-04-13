@@ -88,6 +88,8 @@
   border-radius: var(--radius-full);
   font-weight: 600;
   font-size: 0.9rem;
+  width: fit-content;
+  white-space: nowrap;
   transition: background var(--transition), color var(--transition), transform var(--transition);
 }
 

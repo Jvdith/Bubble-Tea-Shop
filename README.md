@@ -88,14 +88,19 @@ npm run preview
 Bubbly supports importing and exporting reviews in multiple formats. This feature is located in the **Data Management** page.
 
 ### Supported Formats:
-- **JSON, CSV, XML, and XLSX**.
+- **JSON, CSV, TSV, XML, HTML, YAML, XLSX, XLS, and ODS**.
 
 ### Sample Import Files:
 You can download these examples to test the import functionality:
 - [datos.json](./public/datos.json)
 - [datos.csv](./public/datos.csv)
+- [datos.tsv](./public/datos.tsv)
 - [datos.xml](./public/datos.xml)
+- [datos.html](./public/datos.html)
+- [datos.yaml](./public/datos.yaml)
 - [datos.xlsx](./public/datos.xlsx)
+- [datos.xls](./public/datos.xls)
+- [datos.ods](./public/datos.ods)
 
 The application allows you to preview and edit the data in a table before synchronizing it with **Firebase Firestore**. Access to Firebase is centralized in the `src/services/` directory.
 

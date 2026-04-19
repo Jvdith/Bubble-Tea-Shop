@@ -1,4 +1,4 @@
-// src/components/review-card/ReviewCard.jsx
+
 import './ReviewCard.css';
 
 const ReviewCard = ({ review }) => {

@@ -1,9 +1,7 @@
 import Papa from 'papaparse';
 import * as XLSX from 'xlsx';
+import YAML from 'yaml';
 
-/**
- * Parses CSV file to JSON
- */
 export const parseCSV = (file) => {
     return new Promise((resolve, reject) => {
         Papa.parse(file, {
@@ -15,9 +13,18 @@ export const parseCSV = (file) => {
     });
 };
 
-/**
- * Parses XML file to JSON
- */
+export const parseTSV = (file) => {
+    return new Promise((resolve, reject) => {
+        Papa.parse(file, {
+            header: true,
+            skipEmptyLines: true,
+            delimiter: '\t',
+            complete: (results) => resolve(results.data),
+            error: (error) => reject(error)
+        });
+    });
+};
+
 export const parseXML = (xmlString) => {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
@@ -36,10 +43,33 @@ export const parseXML = (xmlString) => {
     return result;
 };
 
-/**
- * Parses XLSX file to JSON
- */
-export const parseXLSX = (file) => {
+export const parseHTML = (htmlString) => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlString, 'text/html');
+    const result = [];
+    const rows = doc.querySelectorAll('tr');
+    
+    rows.forEach((row) => {
+        if (row.querySelector('th')) return;
+        const cols = row.querySelectorAll('td');
+        if (cols.length >= 4) {
+            result.push({
+                author: cols[0].textContent,
+                rating: cols[1].textContent,
+                comment: cols[2].textContent,
+                date: cols[3].textContent
+            });
+        }
+    });
+
+    return result;
+};
+
+export const parseYAML = (yamlString) => {
+    return YAML.parse(yamlString) || [];
+};
+
+export const parseSpreadsheet = (file) => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -59,9 +89,6 @@ export const parseXLSX = (file) => {
     });
 };
 
-/**
- * Generates XML string from JSON data
- */
 export const generateXML = (data) => {
     let xml = '<?xml version="1.0" encoding="UTF-8"?>\n<reviews>\n';
     data.forEach((item) => {
@@ -76,9 +103,25 @@ export const generateXML = (data) => {
     return xml;
 };
 
-/**
- * Triggers a file download
- */
+export const generateHTML = (data) => {
+    let html = '<!DOCTYPE html>\n<html>\n<head>\n<title>Exported Data</title>\n</head>\n<body>\n<table>\n';
+    html += '  <thead>\n    <tr><th>Author</th><th>Rating</th><th>Comment</th><th>Date</th></tr>\n  </thead>\n  <tbody>\n';
+    data.forEach((item) => {
+        html += '    <tr>\n';
+        html += `      <td>${item.author || ''}</td>\n`;
+        html += `      <td>${item.rating || ''}</td>\n`;
+        html += `      <td>${item.comment || ''}</td>\n`;
+        html += `      <td>${item.date || ''}</td>\n`;
+        html += '    </tr>\n';
+    });
+    html += '  </tbody>\n</table>\n</body>\n</html>';
+    return html;
+};
+
+export const generateYAML = (data) => {
+    return YAML.stringify(data);
+};
+
 export const downloadFile = (content, fileName, contentType) => {
     const a = document.createElement('a');
     const file = new Blob([content], { type: contentType });
@@ -88,10 +131,7 @@ export const downloadFile = (content, fileName, contentType) => {
     URL.revokeObjectURL(a.href);
 };
 
-/**
- * Downloads XLSX file
- */
-export const downloadXLSX = (data, fileName) => {
+export const downloadSpreadsheet = (data, fileName) => {
     const worksheet = XLSX.utils.json_to_sheet(data);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Reviews");

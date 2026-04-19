@@ -1,8 +1,8 @@
 import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, writeBatch } from 'firebase/firestore';
 import { signInWithPopup, signOut } from 'firebase/auth';
-import { db, auth, provider } from '../firebase-config/Firebase';
+import { db, auth, provider } from './Firebase';
 
-// --- AUTH SERVICES ---
+
 
 export const signInWithGoogle = async () => {
     try {
@@ -22,7 +22,7 @@ export const logout = async () => {
     }
 };
 
-// --- FIRESTORE SERVICES (Reviews) ---
+
 
 const REVIEWS_COLLECTION = 'reviews';
 

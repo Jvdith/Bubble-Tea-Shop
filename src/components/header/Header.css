@@ -71,7 +71,7 @@
   background: var(--color-bg-alt);
 }
 
-/* Hamburger */
+
 .menu-toggle {
   display: none;
   flex-direction: column;

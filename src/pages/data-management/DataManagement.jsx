@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { parseCSV, parseXML, parseXLSX, generateXML, downloadFile, downloadXLSX } from '../../services/dataParser';
+import { parseCSV, parseTSV, parseXML, parseHTML, parseYAML, parseSpreadsheet, generateXML, generateHTML, generateYAML, downloadFile, downloadSpreadsheet } from '../../services/dataParser';
+import { getReviews, addReview, updateReview } from '../../services/firebaseService';
 import Footer from '../../components/footer/Footer';
 import Papa from 'papaparse';
 import './DataManagement.css';
@@ -24,21 +25,29 @@ const DataManagement = () => {
             let data = [];
             if (extension === 'csv') {
                 data = await parseCSV(file);
+            } else if (extension === 'tsv') {
+                data = await parseTSV(file);
             } else if (extension === 'json') {
                 const text = await file.text();
                 data = JSON.parse(text);
             } else if (extension === 'xml') {
                 const text = await file.text();
                 data = parseXML(text);
-            } else if (extension === 'xlsx') {
-                data = await parseXLSX(file);
+            } else if (extension === 'html') {
+                const text = await file.text();
+                data = parseHTML(text);
+            } else if (extension === 'yaml' || extension === 'yml') {
+                const text = await file.text();
+                data = parseYAML(text);
+            } else if (['xlsx', 'xls', 'ods'].includes(extension)) {
+                data = await parseSpreadsheet(file);
             } else {
                 showMsg('error', 'Unsupported format');
                 setLoading(false);
                 return;
             }
 
-            // Map to internal format
+            
             const sanitized = data.filter(row => row.author || row.comment || row.rating).map(row => ({
                 author: row.author || row.autor || 'Anonymous',
                 rating: Number(row.rating || row.calificacion || 5),
@@ -47,9 +56,50 @@ const DataManagement = () => {
             }));
 
             setImportedData(sanitized);
-            showMsg('success', `Imported ${sanitized.length} items. You can now edit and export them.`);
+            showMsg('success', `Imported ${sanitized.length} items. You can now save them to Firebase or export.`);
         } catch (error) {
             showMsg('error', 'Error parsing file: ' + error.message);
+        }
+        setLoading(false);
+    };
+
+    const handleLoadFromFirebase = async () => {
+        setLoading(true);
+        try {
+            const data = await getReviews();
+            if (data.length === 0) {
+                showMsg('info', 'No reviews found in Firebase.');
+            } else {
+                setImportedData(data);
+                showMsg('success', `Loaded ${data.length} reviews from Firebase.`);
+            }
+        } catch (error) {
+            showMsg('error', 'Error loading from Firebase: ' + error.message);
+        }
+        setLoading(false);
+    };
+
+    const handleSaveToFirebase = async () => {
+        if (importedData.length === 0) {
+            showMsg('error', 'No data to save.');
+            return;
+        }
+        setLoading(true);
+        try {
+            let successCount = 0;
+            let updateCount = 0;
+            for (const item of importedData) {
+                if (item.id) {
+                    const res = await updateReview(item.id, item);
+                    if (res.success) updateCount++;
+                } else {
+                    const res = await addReview(item);
+                    if (res.success) successCount++;
+                }
+            }
+            showMsg('success', `Successfully saved! Added: ${successCount}, Updated: ${updateCount}`);
+        } catch (error) {
+            showMsg('error', 'Error saving to Firebase: ' + error.message);
         }
         setLoading(false);
     };
@@ -62,7 +112,7 @@ const DataManagement = () => {
 
     const handleExport = (format) => {
         if (importedData.length === 0) {
-            showMsg('error', 'No data to export. Please import a file first.');
+            showMsg('error', 'No data to export. Please load data first.');
             return;
         }
 
@@ -71,19 +121,31 @@ const DataManagement = () => {
             rating: isNaN(Number(item.rating)) ? 5 : Number(item.rating)
         }));
 
-        const fileName = `converted_data.${format}`;
+        
+        const cleanData = dataToExport.map(({ id, ...rest }) => rest);
+
+        const fileName = `app_data_export.${format}`;
 
         try {
             if (format === 'json') {
-                downloadFile(JSON.stringify(dataToExport, null, 2), fileName, 'application/json');
+                downloadFile(JSON.stringify(cleanData, null, 2), fileName, 'application/json');
             } else if (format === 'csv') {
-                const csv = Papa.unparse(dataToExport);
+                const csv = Papa.unparse(cleanData);
                 downloadFile(csv, fileName, 'text/csv');
+            } else if (format === 'tsv') {
+                const tsv = Papa.unparse(cleanData, { delimiter: '\t' });
+                downloadFile(tsv, fileName, 'text/tsv');
             } else if (format === 'xml') {
-                const xml = generateXML(dataToExport);
+                const xml = generateXML(cleanData);
                 downloadFile(xml, fileName, 'text/xml');
-            } else if (format === 'xlsx') {
-                downloadXLSX(dataToExport, fileName);
+            } else if (format === 'html') {
+                const html = generateHTML(cleanData);
+                downloadFile(html, fileName, 'text/html');
+            } else if (format === 'yaml') {
+                const yamlStr = generateYAML(cleanData);
+                downloadFile(yamlStr, fileName, 'text/yaml');
+            } else if (['xlsx', 'xls', 'ods'].includes(format)) {
+                downloadSpreadsheet(cleanData, fileName);
             }
             showMsg('success', `Exported as ${format.toUpperCase()} successfully.`);
         } catch (error) {
@@ -92,9 +154,9 @@ const DataManagement = () => {
     };
 
     const handleClear = () => {
-        if (window.confirm('Clear all imported data?')) {
+        if (window.confirm('Clear all data from the table?')) {
             setImportedData([]);
-            showMsg('success', 'Data cleared.');
+            showMsg('success', 'Data cleared from view.');
         }
     };
 
@@ -102,39 +164,53 @@ const DataManagement = () => {
         <div className="app-container">
             <main className="admin-main">
                 <section className="admin-header">
-                    <h1 className="admin-title">File Format Converter</h1>
-                    <p>Import a file, edit the contents, and export to any supported format.</p>
+                    <h1 className="admin-title">Data Management</h1>
+                    <p>Import a file, load from Firebase, edit the contents, and export to any supported format or save online.</p>
                 </section>
 
                 <div className="converter-container">
-                    {/* STEP 1: IMPORT */}
+                    
                     <div className="admin-card">
-                        <h2>1. Import Input File</h2>
-                        <div className="file-input-wrapper">
-                            <input 
-                                type="file" 
-                                accept=".csv,.xml,.json,.xlsx" 
-                                onChange={handleFileUpload}
-                                id="file-upload"
-                            />
-                            <label htmlFor="file-upload" className="btn-secondary">Choose File (CSV, XML, JSON, XLSX)</label>
+                        <h2>1. Select Data Source</h2>
+                        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginTop: '1rem', flexWrap: 'wrap' }}>
+                            <div className="file-input-wrapper" style={{ margin: 0 }}>
+                                <input 
+                                    type="file" 
+                                    accept=".csv,.xml,.json,.xlsx,.xls,.ods,.tsv,.html,.yaml,.yml" 
+                                    onChange={handleFileUpload}
+                                    id="file-upload"
+                                />
+                                <label htmlFor="file-upload" className="btn-secondary"> Import Local File</label>
+                            </div>
+                            <span style={{ fontWeight: 'bold' }}>OR</span>
+                            <button className="btn-secondary" onClick={handleLoadFromFirebase} disabled={loading}>
+                                 Load from Firebase
+                            </button>
                         </div>
+                        <p style={{marginTop: '1rem', fontSize: '0.85rem', color: 'gray'}}>
+                            <strong>Supported Import Formats:</strong> .JSON, .CSV, .TSV, .XML, .HTML, .YAML, .XLSX, .XLS, .ODS
+                        </p>
 
                         {message.text && (
-                            <div className={`status-message ${message.type}`}>
+                            <div className={`status-message ${message.type}`} style={{marginTop:'1.5rem'}}>
                                 {message.text}
                             </div>
                         )}
                     </div>
 
-                    {/* STEP 2: PREVIEW & EDIT */}
+                    
                     {importedData.length > 0 && (
                         <div className="admin-card">
-                            <div className="card-header">
-                                <h2>2. Preview & Edit Data</h2>
-                                <button className="btn-text" onClick={handleClear}>Clear Everything</button>
+                            <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                                <h2 style={{margin: 0}}>2. Preview & Edit Data</h2>
+                                <div style={{ display: 'flex', gap: '1rem' }}>
+                                    <button className="btn-primary" onClick={handleSaveToFirebase} disabled={loading}>
+                                        Save to Firebase
+                                    </button>
+                                    <button className="btn-text" onClick={handleClear}>Clear View</button>
+                                </div>
                             </div>
-                            <div className="table-wrapper">
+                            <div className="table-wrapper" style={{marginTop: '1rem'}}>
                                 <table>
                                     <thead>
                                         <tr>
@@ -159,23 +235,38 @@ const DataManagement = () => {
                         </div>
                     )}
 
-                    {/* STEP 3: EXPORT */}
+                    
                     {importedData.length > 0 && (
                         <div className="admin-card">
                             <h2>3. Export Filtered Data</h2>
-                            <p>Choose your desired output format:</p>
+                            <p>Choose your desired output format for local download:</p>
                             <div className="export-buttons-grid">
                                 <button className="btn-export-final" onClick={() => handleExport('json')}>
-                                    <span className="icon">📄</span> Export as JSON
+                                    Export JSON
                                 </button>
                                 <button className="btn-export-final" onClick={() => handleExport('csv')}>
-                                    <span className="icon">📊</span> Export as CSV
+                                    Export CSV
+                                </button>
+                                <button className="btn-export-final" onClick={() => handleExport('tsv')}>
+                                    Export TSV
                                 </button>
                                 <button className="btn-export-final" onClick={() => handleExport('xml')}>
-                                    <span className="icon">📜</span> Export as XML
+                                    Export XML
+                                </button>
+                                <button className="btn-export-final" onClick={() => handleExport('html')}>
+                                    Export HTML
+                                </button>
+                                <button className="btn-export-final" onClick={() => handleExport('yaml')}>
+                                    Export YAML
                                 </button>
                                 <button className="btn-export-final" onClick={() => handleExport('xlsx')}>
-                                    <span className="icon">📉</span> Export as XLSX
+                                    Export XLSX
+                                </button>
+                                <button className="btn-export-final" onClick={() => handleExport('xls')}>
+                                    Export XLS
+                                </button>
+                                <button className="btn-export-final" onClick={() => handleExport('ods')}>
+                                    Export ODS
                                 </button>
                             </div>
                         </div>
